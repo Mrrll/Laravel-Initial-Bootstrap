@@ -7,33 +7,11 @@ Proyecto de inicio de laravel con Bootstrap.
 > Typee: en la Consola:
 
 ```console
-
 git clone https://github.com/Mrrll/Laravel-Initial-Bootstrap.git new_name
-
 ```
 
 > Eliminamos la carpeta `.git` del proyecto. y seguimos los pasos de [Inicializar Git](#item2)
 
-
-> Iniciamos el npm
-
-> Typee: en la Consola:
-
-```console
-
-npm i
-
-```
-
-> Iniciamos el composer
-
-> Typee: en la Consola:
-
-```console
-
-composer dump-autoload
-
-```
 
 > [!IMPORTANT]
 > Duplicamos el archivo `.env.example` y lo renombramos a `.env` configuramos la `base de datos` y el `servidor de correo` y creamos la base de datos.
@@ -41,9 +19,7 @@ composer dump-autoload
 > Typee: en la Consola:
 
 ```console
-
 cp .env.example .env
-
 ```
 
 > Iniciamos el npm
@@ -51,9 +27,7 @@ cp .env.example .env
 > Typee: en la Consola:
 
 ```console
-
 npm i
-
 ```
 
 > Iniciamos el composer
@@ -71,9 +45,7 @@ composer dump-autoload
 > Typee: en la Consola:
 
 ```console
-
 php artisan migrate
-
 ```
 
 
