@@ -7,7 +7,7 @@
                     :type="$button['type']"
                     :id="$button['slug']"
                     :class="(isset($button['route']) && request()->routeIs($button['route']) ? $button['class']. ' active disabled' : $button['class'])"
-                    :route="(isset($button['route'])) ? $button['route'] : ''"
+                    :route="(isset($button['route'])) ? $button['route'] : null"
                     :position="(isset($button['position'])) ? $button['position'] : ''">
                         @if ($button['type'] == 'dropdown')
                             <x-slot:title>
