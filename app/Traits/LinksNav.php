@@ -8,7 +8,7 @@ namespace App\Traits;
  *  "welcome": {
  *  "name": "Welcome",
  *  "slug": "welcome",
- *  "type": "link",
+ *  "type": "link/submit/dropdown/modal", (dropdown => "position": "dropdown"),
  *  "route": "welcome",
  *  "class": "nav-link",
  *  "icon": {
@@ -27,7 +27,7 @@ namespace App\Traits;
  *          "slug": "welcome",
  *          "type": "link",
  *          "route": "welcome",
- *          "class": "nav-link",
+ *          "class": "nav-link", (dropdown => dropdown-item)
  *          "icon": {
  *              "type" : "i",
  *              "name" : "fa-solid fa-magnifying-glass fa-2xl"

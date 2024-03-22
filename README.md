@@ -673,7 +673,7 @@ php artisan make:component dom/Button
 
 @switch($type)
     @case('link')
-        <a href="{{ route($route) }}" {{ $attributes->merge(['class' => "$class"]) }} id="{{ $id ?? '' }}"
+        <a href="{{ isset($route) ? route($route) : '#' }}" {{ $attributes->merge(['class' => "$class"]) }} id="{{ $id ?? '' }}"
             @isset($tooltip)
                 @if ($tooltip != null && $tooltip != '')
                     data-bs-toggle="tooltip"
