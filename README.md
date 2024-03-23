@@ -10,6 +10,9 @@ Proyecto de inicio de laravel con Bootstrap.
 git clone https://github.com/Mrrll/Laravel-Initial-Bootstrap.git new_name
 ```
 
+> [!WARNING]
+> Asegúrese de que el remoto es correcto antes de subir su proyecto, `git remote show origin`.
+
 > Eliminamos la carpeta `.git` del proyecto. y seguimos los pasos de [Inicializar Git](#item2)
 
 
