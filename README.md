@@ -14,7 +14,7 @@ git clone https://github.com/Mrrll/Laravel-Initial-Bootstrap.git new_name
 > Eliminamos la carpeta `.git` del proyecto. y seguimos los pasos de [Inicializar Git](#item2)
 
 > [!WARNING]
-> Asegúrese de que la url remota es correcto antes de subir su proyecto, `git remote show origin`.
+> Asegúrese de que la url remota es correcta antes de subir su proyecto, `git remote show origin`.
 
 
 > [!IMPORTANT]
