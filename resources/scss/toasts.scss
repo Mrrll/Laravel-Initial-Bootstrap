@@ -7,6 +7,11 @@
     border-radius: 0;
 }
 
+.toast-scroll {
+    overflow-y: auto;
+    height: 100vh;
+}
+
 .close-toast {
     animation-name: close_toast;
     animation-duration: 2s;

@@ -1044,6 +1044,8 @@ public function __construct(
 
 [Subir](#top)
 
+<a name="item24"></a>
+
 ### Componente toasts
 
 ```console
@@ -1132,6 +1134,11 @@ public function __construct(
     border-radius: 0;
 }
 
+.toast-scroll {
+    overflow-y: auto;
+    height: 100vh;
+}
+
 .close-toast {
     animation-name: close_toast;
     animation-duration: 2s;
@@ -1208,6 +1215,79 @@ $("#close_toats").on("click", function () {
 $(".toast").on("hidden.bs.toast", function () {
     $(this).addClass("close-toast");
 });
+
+function CreateToast(
+    title,
+    message,
+    type = "info",
+    delay = 10000,
+    autohide = "true",
+    icon = true,
+    close = true,
+    position = "top-0 end-0"
+) {
+    $.ajax({
+        url: "/toasts/ajax",
+        method: "get",
+        dataType: "json",
+        data: {
+            title: title,
+            message: message,
+            type: type,
+            delay: delay,
+            autohide: autohide,
+            icon: icon,
+            close: close,
+            position: position,
+        },
+    }).done(function (data) {
+        $(".toast-container").append(data);
+
+        $(".toast").on("show.bs.toast", function () {
+            let dt = new Date();
+            let time =
+                dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+            $(".toast:last").children(".toast-header").find("small").html(time);
+            $(".toast:last").children(".toast-body").html(message);
+        });
+
+        $(".toast").on("shown.bs.toast", function () {
+            let progress_bar = {
+                "animation-name": "progress_toast",
+                "animation-fill-mode": "forwards",
+                "animation-duration": $(".toast:last").data("bs-delay") + "ms",
+                "animation-timing-function": "ease-out",
+                "animation-iteration-count": "1",
+            };
+
+            if ($(".toast:last").data("bs-autohide")) {
+                $(".toast:last")
+                    .children(".progress")
+                    .children("div")
+                    .css(progress_bar);
+            }
+        });
+
+        $(".toast").on("hide.bs.toast", function () {
+            $(this).addClass("close-toast");
+        });
+        $(".toast").on("hidden.bs.toast", function () {
+            $(this).remove();
+            if ($(".toast:last").length === 0) {
+                $(".toast-container").find("svg").remove();
+            }
+        });
+        $(".toast:last").toast("show");
+
+        $(".btn-close").on("click", function () {
+            $(this).closest(".toast").addClass("close-toast");
+            setTimeout(() => {
+                $(this).closest(".toast").toast("hide");
+            }, 2500);
+        });
+    });
+}
+window.CreateToast = CreateToast;
 ```
 
 > [!IMPORTANT]
@@ -1216,21 +1296,17 @@ $(".toast").on("hidden.bs.toast", function () {
 > Creamos el archivo `toasts.blade.php` en la ubicación `resources/views/messages/` y escribimos:
 
 ```html
-@if (session('message'))
-<div
-    class="toast-container position-absolute {{ session('message')['position'] ?? 'top-0 end-0' }} p-3"
->
-    <x-messages.toasts
-        type="{{ session('message')['type'] ?? 'info' }}"
-        delay="{{ session('message')['delay'] ?? '5000' }}"
-        :autohide="session('message')['autohide'] ?? 'true'"
-        :icon="session('message')['icon'] ?? true"
-    >
-        <x-slot:title> {{ session('message')['title'] ?? '' }} </x-slot:title>
-        {{ session('message')['message'] ?? '' }}
-    </x-messages.toasts>
+<div class="toast-container position-absolute {{ session('message')['position'] ?? 'top-0 end-0' }} p-3 toast-scroll">
+    @if (session('message'))
+        <x-messages.toasts type="{{ session('message')['type'] ?? 'info' }}"
+            delay="{{ session('message')['delay'] ?? '5000' }}" :autohide="session('message')['autohide'] ?? 'true'" :icon="session('message')['icon'] ?? true">
+            <x-slot:title>
+                {{ session('message')['title'] ?? '' }}
+            </x-slot:title>
+            {{ session('message')['message'] ?? '' }}
+        </x-messages.toasts>
+    @endif
 </div>
-@endif
 ```
 
 > Abrimos el archivo `plantilla.blade.php` ubicado en `resources/views/layouts/` añadimos el componente toasts
@@ -1241,6 +1317,41 @@ $(".toast").on("hidden.bs.toast", function () {
     @include('messages.toasts') @yield('content')
     <x-layouts.footer />
 </body>
+```
+
+> Typee: en la Consola:
+
+```console
+php artisan make:controller Messages\ToastsController
+```
+
+> Abrimos el archivo `ToastsController.php` ubicado en `app/Http/Controllers/Messages\` y escribimos lo siguiente.
+
+```php
+public function ajax(Request $request)
+{
+    if ($request->ajax()) {
+
+        $type = isset($request->type) ? $request->type : 'success';
+        $close = isset($request->close) ? $request->close : true;
+        $icon = isset($request->icon) ? $request->icon : true;
+        $delay = isset($request->delay) ? $request->delay : 10000;
+        $autohide = isset($request->autohide) ? $request->autohide : "true";
+        $title = $request->title;
+
+        $toasts = view("components.messages.toasts", compact('type', 'slot','close','icon','delay','autohide','title'))->render();
+
+        return response()->json($toasts);
+    }
+}
+```
+
+> Abrimos el archivo `web.php` ubicado en `routes\` y añadimos lo siguiente.
+
+```php
+use App\Http\Controllers\Messages\ToastsController;
+
+Route::get('toasts/ajax', [ToastsController::class, 'ajax']);
 ```
 
 [Subir](#top)
